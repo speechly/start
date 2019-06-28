@@ -8,4 +8,4 @@ To get get an application id apply to our beta program by sending an email to [a
 
 ### Next Steps
 
-After you've gotten yourself started with the code samples of this repo you can check out [the grocery example](https://github.com/speechgrinder/grocery) for a more complete application example using the Speechgrinder API.
+After you've gotten yourself started with the code in this repo you can check out [the grocery repository](https://github.com/speechgrinder/grocery) for a more complete example using the Speechgrinder API.
