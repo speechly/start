@@ -7,7 +7,8 @@ This is a simple python client that
  3. prints the API response to the console.   
 
 ## Requirements 
-    
+
+* Speechgrinder application ID
 * Python >= 3.5 with [grpcio-tools](https://pypi.org/project/grpcio-tools/) installed. 
     
 ## Running
