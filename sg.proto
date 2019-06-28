@@ -1,0 +1,211 @@
+// MIT License
+//
+// Copyright (c) 2019 Speechgrinder
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+
+syntax = "proto3";
+
+package speechgrinder.sgapi.v1;
+
+// Speechgrinder spoken language understanding service
+//
+// This service requires that the user has an accesstoken from
+// `Identity` service. The token must be included in the metadata as
+// `Authorization` key with value `Bearer TOKEN_HERE`.
+service Slu {
+    // Starts an SLU bidirectional stream, the input and output
+    // messages explains the details of the call.
+    rpc Stream(stream SluRequest)
+        returns (stream SluResponse) {}
+}
+
+// The message repeatedly sent by the client of `Slu.Stream`.
+//
+// When a new `Slu.Stream` stream is started, the client must first
+// send the `config` value, which configures the SLU engine. If it is
+// not the first message sent, the stream will close with an error.
+//
+// After the configuration has done, the stream is in an "audio loop"
+// state. Where the user sends `event` messages as a control signal,
+// e.g. to start and stop a single utterance. And the user streams
+// audio as `audio` value when an utterance is ongoing.
+//
+// The basic audio loop is:
+// - Client sends `SluEvent.Event.START` event.
+// - Server sends `SluResponse.started` when it's ready to receive
+//   audio for an utterance.
+// - Client sends audio chunks. Chunks must be under one megabyte.
+// - Server sends `SluReponses` for events and utterance results.
+// - Client sends `SluEvent.Event.STOP` event and stops sending audio.
+// - Server processed all audio received until stop, and sends
+//   utterance results. Finishing with `finished response`.
+//
+// Only one utterance can be active at a time, but the old utterances
+// can still concurrently send results. If a new utterance is started
+// without stopping the previous one, the previous utterance is
+// automatically stopped.
+//
+// See `SluResponse` for info on server sent messages.
+message SluRequest {
+    oneof streaming_request {
+        SluConfig config = 1;
+        SluEvent event = 2;
+        bytes audio = 3;
+    }
+}
+
+// Message to configure the speech recognition engine.
+//
+// This message must be sent as the first message in `Slu.Stream` RPC.
+message SluConfig {
+    // Choice of audio encodings.
+    enum Encoding {
+        LINEAR16 = 0; // Raw linear 16-bit PCM audio.
+    }
+
+    // The encoding used for the audio stream, defaults to the first
+    // item in `Encoding`.
+    Encoding encoding = 1;
+
+    // *Required* Channels in the audio stream, must be at least 1.
+    int32 channels = 2;
+
+    // *Required* Sample rate of the audio stream. 16000Hz is
+    // preferred, 8000Hz is the minimum rate.
+    int32 sample_rate_hertz = 3;
+
+    // *Required* Language code for speech recognition. Must match one
+    // of the languages defined in the appId configuration.
+    string language_code = 4;
+}
+
+// Control event send by the client in `Slu.Stream` RPC.
+message SluEvent {
+    enum Event {
+        START = 0; // Starts an utterance
+        STOP = 1; // Stops an utterance
+    }
+    Event event = 1;
+}
+
+// Message sent by the server in `Slu.Stream` RPC.
+//
+// When an utterance is started, the server sends the `SluStarted`
+// message, which contains a `utterance_id` for matching rest of the
+// response messages to that specific utterance.
+//
+// As the audio is processed, the server sends `Utterance` messages
+// continuously.
+//
+// `SluFinished` is sent when an utterance is finished, either by the
+// client stopping the utterance, or by an error.
+message SluResponse {
+    oneof streaming_response {
+        SluStarted started = 1;
+        Utterance utterance = 2;
+        SluFinished finished = 3;
+    }
+}
+
+// Message sent when an utterance has started.
+message SluStarted {
+    string utterance_id = 1; // identifier to match server responses
+                             // to an utterance.
+}
+
+// Message sent when an utterance is finished.
+message SluFinished {
+    string utterance_id = 1;
+
+    // If the utterance finished with an error, then this field
+    // contains a value.
+    SluError error = 2;
+}
+
+// Message for errors
+message SluError {
+    string code = 1; // Short code for the error
+    string message = 2; // Human readable explanation of the error
+}
+
+// Message for a result of an utterance
+//
+// The server can send multiple `Utterance` responses, as the results
+// start streaming as soon as SLU has processed some part of the
+// audio. `type` field is either `interimItem` or `finalItem` which
+// separates transient results from permament results. The transient
+// results can be used to show immediate feedback to the user, but
+// they can change totally as more audio is processed.
+message Utterance {
+    string utterance_id = 1;
+    string type = 2; // `interimItem` or `finalItem`
+    string language_code = 3;
+    repeated Alternative alternatives = 4;
+}
+
+// Message for an alternative linguistic analysis of an utterance.
+//
+// Each alternative provides a token wise linguistic analysis
+// accompanied by a confidence value indicating certainly about the
+// correctness of the analysis.
+message Alternative {
+    float confidence = 1; // A value between 0.0 and 1.0 with larger values
+                          // indicating high confidence.
+    repeated Token tokens = 2; // Token wise linguistic analysis.
+}
+
+// Message for a linguistic analysis of a single token.
+message Token {
+    enum TokenPosition { // Tokens position values within an entity.
+        outsideOf = 0;
+        startOf = 1;
+        insideOf = 2;
+    }
+    string text = 1; // Token string.
+    string text_with_trailing_space = 2; // Text content, with trailing space character if present.
+    string lemma = 3; // Base form of the token, with no inflectional suffixes.
+    string pos = 4; // Coarse-grained part-of-speech.
+    string tag = 5; // Fine-grained part-of-speech.
+    string case = 6; // Token grammatical case.
+    string number = 7; // Token grammatical category of number, e.g. singular / plural.
+    string entity_type = 8; // Named entity type.
+    TokenPosition position_in_entity = 9; // Token position within an entity.
+    bool is_segment_start = 10; // Indication of whether the token starts a segment.
+    int32 trailing_silence = 11;  // Length of trailing silence after uttered token (centiseconds).
+}
+
+// Authentication and identity service
+service Identity {
+    // Performs a login for the user, when successful it returns an
+    // access token to access `Slu` service.
+    rpc Login(LoginRequest) returns (LoginResponse) {}
+}
+
+// The request to login with `Identity.Login`
+message LoginRequest {
+    // *Required* An unique identifier for the end user.
+    string device_id = 1;
+    // *Required* Application ID registered with Speechgrinder.
+    string app_id = 2;
+}
+
+message LoginResponse {
+    string token = 1; // Access token to be used for `Slu` service.
+}
