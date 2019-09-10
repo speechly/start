@@ -12,11 +12,12 @@ chunk_size = 8000
 if 'APP_ID' not in os.environ:
     raise RuntimeError('APP_ID environment variable needs to be set')
 
-
 def audio_iterator():
-    yield SluRequest(config=SluConfig(channels=1, sample_rate_hertz=16000))
-    yield SluRequest(event=SluEvent(event='START'))
     with wave.open('../audio.wav', mode='r') as audio_file:
+        if audio_file.getnchannels() > 1:
+            raise RuntimeError('Only mono channel audio is supported')
+        yield SluRequest(config=SluConfig(channels=1, sample_rate_hertz=audio_file.getframerate()))
+        yield SluRequest(event=SluEvent(event='START'))
         audio_bytes = audio_file.readframes(chunk_size)
         while audio_bytes:
             yield SluRequest(audio=audio_bytes)

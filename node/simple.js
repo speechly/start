@@ -35,9 +35,13 @@ const login = (deviceId, appId) => {
 
 const start = slu => {
   const audio = new wav.Reader();
-
-  slu.write({ config: { channels: 1, sampleRateHertz: 16000 } });
-  slu.write({ event: { event: "START" } });
+  audio.on("format", function(format) {
+    if (format.channels > 1) {
+      throw new Error("Only mono channel audio is supported");
+    }
+    slu.write({ config: { channels: 1, sampleRateHertz: format.sampleRate } });
+    slu.write({ event: { event: "START" } });
+  });
 
   audio.on("data", audioData => {
     if (slu.writable) {
