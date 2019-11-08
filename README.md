@@ -1,6 +1,6 @@
 # Getting Started with the Speechly API
 
-This repository features simple code examples on how to call the [Speechly] API with Python and Node. The language specific examples can be found in respective subdirectories of this repository.
+This repository features simple code examples on how to call the [Speechly](https://www.speechly.com/) API with Python and Node. The language specific examples can be found in respective subdirectories of this repository.
 
 The Speechly API is defined using protocol buffers (see [sg.proto](sg.proto)). If your favorite programming language is not included in our examples you can generate your own client by following the instructions from [here](https://developers.google.com/protocol-buffers/).
 
