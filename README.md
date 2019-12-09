@@ -6,8 +6,4 @@ The Speechly API is defined using protocol buffers (see [sg.proto](sg.proto)). I
 
 To get an application id apply to our beta program by sending an email to [appid@speechly.com](mailto:appid@speechky.com). There are limited seats! Happy hacking!
 
-### Next Steps
-
-After you've gotten yourself started with the code in this repo you can check out [the grocery repository](https://github.com/speechly/grocery) for a more complete example using the Speechly API.
-
 You can read more about Speechly at [our website](https://www.speechly.com/).
