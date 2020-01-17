@@ -1,6 +1,6 @@
 // MIT License
 //
-// Copyright (c) 2019 Speechgrinder
+// Copyright (c) 2020, Speechly
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -22,18 +22,17 @@
 
 syntax = "proto3";
 
-package speechgrinder.sgapi.v1;
+package v1;
 
-// Speechgrinder spoken language understanding service
+// Speechly spoken language understanding service
 //
 // This service requires that the user has an accesstoken from
 // `Identity` service. The token must be included in the metadata as
 // `Authorization` key with value `Bearer TOKEN_HERE`.
-service Slu {
+service SLU {
     // Starts an SLU bidirectional stream, the input and output
     // messages explains the details of the call.
-    rpc Stream(stream SluRequest)
-        returns (stream SluResponse) {}
+    rpc Stream(stream SLURequest) returns (stream SLUResponse) {}
 }
 
 // The message repeatedly sent by the client of `Slu.Stream`.
@@ -48,25 +47,30 @@ service Slu {
 // audio as `audio` value when an utterance is ongoing.
 //
 // The basic audio loop is:
-// - Client sends `SluEvent.Event.START` event.
+// - Client sends `SluEvent.Event.START` event when the user wants to
+//   start speaking.
 // - Server sends `SluResponse.started` when it's ready to receive
 //   audio for an utterance.
 // - Client sends audio chunks. Chunks must be under one megabyte.
 // - Server sends `SluReponses` for events and utterance results.
-// - Client sends `SluEvent.Event.STOP` event and stops sending audio.
+// - Client sends `SluEvent.Event.STOP` event when no more audio is to
+//   be sent for this utterance.
 // - Server processed all audio received until stop, and sends
 //   utterance results. Finishing with `finished response`.
 //
 // Only one utterance can be active at a time, but the old utterances
-// can still concurrently send results. If a new utterance is started
-// without stopping the previous one, the previous utterance is
-// automatically stopped.
+// can still concurrently send results.
 //
-// See `SluResponse` for info on server sent messages.
-message SluRequest {
+// If `SluEvent.Event.START` is send before stopping the current
+// on-going utterance with `SluEvent.Event.STOP` the whole stream is
+// killed with an error. This is to ensure that the clients are well
+// behaved.
+//
+// See `SLUResponse` for info on server sent messages.
+message SLURequest {
     oneof streaming_request {
-        SluConfig config = 1;
-        SluEvent event = 2;
+        SLUConfig config = 1;
+        SLUEvent event = 2;
         bytes audio = 3;
     }
 }
@@ -74,7 +78,7 @@ message SluRequest {
 // Message to configure the speech recognition engine.
 //
 // This message must be sent as the first message in `Slu.Stream` RPC.
-message SluConfig {
+message SLUConfig {
     // Choice of audio encodings.
     enum Encoding {
         LINEAR16 = 0; // Raw linear 16-bit PCM audio.
@@ -97,10 +101,10 @@ message SluConfig {
 }
 
 // Control event send by the client in `Slu.Stream` RPC.
-message SluEvent {
+message SLUEvent {
     enum Event {
-        START = 0; // Starts an utterance
-        STOP = 1; // Stops an utterance
+        START = 0; // Starts a new audio context
+        STOP = 1; // Stops an audio context
     }
     Event event = 1;
 }
@@ -108,87 +112,92 @@ message SluEvent {
 // Message sent by the server in `Slu.Stream` RPC.
 //
 // When an utterance is started, the server sends the `SluStarted`
-// message, which contains a `utterance_id` for matching rest of the
+// message, which contains an `audio_context` for matching rest of the
 // response messages to that specific utterance.
 //
-// As the audio is processed, the server sends `Utterance` messages
+// As the audio is processed, the server sends `TranscriptEvent` messages
 // continuously.
 //
-// `SluFinished` is sent when an utterance is finished, either by the
+// `SluFinished` is sent when an audio context is finished, either by the
 // client stopping the utterance, or by an error.
-message SluResponse {
+message SLUResponse {
     oneof streaming_response {
-        SluStarted started = 1;
-        Utterance utterance = 2;
-        SluFinished finished = 3;
+        TranscriptEvent transcript = 1;
+        EntityEvent entity = 2;
+        IntentEvent intent = 3;
+        SegmentEndEvent segment_end = 4;
+
+        TentativeTranscriptEvent tentative_transcript = 5;
+        TentativeEntitiesEvent tentative_entities = 6;
+        IntentEvent tentative_intent = 7;
+
+        SLUStarted started = 8;
+        SLUFinished finished = 9;
     }
 }
-
-// Message sent when an utterance has started.
-message SluStarted {
-    string utterance_id = 1; // identifier to match server responses
-                             // to an utterance.
+message TentativeTranscriptEvent {
+    string tentative_transcript = 1;
+    repeated TranscriptEvent tentative_words = 2;
 }
+message TranscriptEvent {
+    string audio_context = 1;
+    int32 segment_id = 2;
+    string word = 3;
+    int32 index = 4;
+    int32 start_time = 5;
+    int32 end_time = 6;
+}
+message TentativeEntitiesEvent {
+    repeated EntityEvent tentative_entities = 1;
+}
+message EntityEvent {
+    string audio_context = 1;
+    int32 segment_id = 2;
+    string entity = 3;
+    string value = 4;
+    int32 start_position = 5;
+    int32 end_position = 6;
+}
+message IntentEvent {
+    string audio_context = 1;
+    int32 segment_id = 2;
+    string intent = 3;
+}
+message SegmentEndEvent {
+    string audio_context = 1;
+    int32 segment_id = 2;
+}
+// Message sent when a new audio context has started.
+message SLUStarted {
+    string audio_context = 1; // identifier to match server responses
+                              // to an audio context.
+}
+// Message sent when an audio context is finished.
+message SLUFinished {
+    string audio_context = 1;
 
-// Message sent when an utterance is finished.
-message SluFinished {
-    string utterance_id = 1;
-
-    // If the utterance finished with an error, then this field
+    // If the audio context finished with an error, then this field
     // contains a value.
-    SluError error = 2;
+    SLUError error = 2;
 }
-
 // Message for errors
-message SluError {
+message SLUError {
     string code = 1; // Short code for the error
     string message = 2; // Human readable explanation of the error
 }
 
-// Message for a result of an utterance
-//
-// The server can send multiple `Utterance` responses, as the results
-// start streaming as soon as SLU has processed some part of the
-// audio. `type` field is either `interimItem` or `finalItem` which
-// separates transient results from permament results. The transient
-// results can be used to show immediate feedback to the user, but
-// they can change totally as more audio is processed.
-message Utterance {
-    string utterance_id = 1;
-    string type = 2; // `interimItem` or `finalItem`
-    string language_code = 3;
-    repeated Alternative alternatives = 4;
+// Speechly written language understanding service
+service WLU {
+    rpc Text(WLURequest) returns (WLUResponse) {}
 }
 
-// Message for an alternative linguistic analysis of an utterance.
-//
-// Each alternative provides a token wise linguistic analysis
-// accompanied by a confidence value indicating certainly about the
-// correctness of the analysis.
-message Alternative {
-    float confidence = 1; // A value between 0.0 and 1.0 with larger values
-                          // indicating high confidence.
-    repeated Token tokens = 2; // Token wise linguistic analysis.
+message WLURequest {
+    string language_code = 1;
+    string text = 2;
 }
 
-// Message for a linguistic analysis of a single token.
-message Token {
-    enum TokenPosition { // Tokens position values within an entity.
-        outsideOf = 0;
-        startOf = 1;
-        insideOf = 2;
-    }
-    string text = 1; // Token string.
-    string text_with_trailing_space = 2; // Text content, with trailing space character if present.
-    string lemma = 3; // Base form of the token, with no inflectional suffixes.
-    string pos = 4; // Coarse-grained part-of-speech.
-    string tag = 5; // Fine-grained part-of-speech.
-    string case = 6; // Token grammatical case.
-    string number = 7; // Token grammatical category of number, e.g. singular / plural.
-    string entity_type = 8; // Named entity type.
-    TokenPosition position_in_entity = 9; // Token position within an entity.
-    bool is_segment_start = 10; // Indication of whether the token starts a segment.
-    int32 trailing_silence = 11;  // Length of trailing silence after uttered token (centiseconds).
+message WLUResponse {
+    repeated SLUResponse responses = 1;
 }
 
 // Authentication and identity service
@@ -202,7 +211,7 @@ service Identity {
 message LoginRequest {
     // *Required* An unique identifier for the end user.
     string device_id = 1;
-    // *Required* Application ID registered with Speechgrinder.
+    // *Required* Application ID registered with Speechly.
     string app_id = 2;
 }
 
