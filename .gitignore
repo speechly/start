@@ -1,2 +1,3 @@
 .speechly_token
 node_modules/
+.venv/
