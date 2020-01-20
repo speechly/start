@@ -5,6 +5,41 @@ import sys
 
 from speechly import Speechly
 
+def align(s1, s2):
+    D = {}
+    T = {}
+    x = s1.lower().split(' ')
+    y = s2.lower().split(' ')
+    for i in range(len(x)):
+        D[i,0] = i
+        T[i,0] = (i-1,0)
+    for j in range(len(y)):
+        D[0,j] = j
+        T[0,j] = (0, j-1)
+    T[0,0] = (0,0)
+    for i in range(1, len(x)):
+        for j in range(1, len(y)):
+            cost = 2 if x[i] != y[j] else 0
+            value, op = min((D[i-1,j] + 1, (i-1,j)), (D[i, j-1] + 1, (i,j-1)), (D[i-1, j-1] + cost, (i-1, j-1)))
+            D[i,j] = value
+            T[i,j] = op
+    alignment = {}
+    i, j = len(x)-1, len(y)-1
+    while i > 0 or j > 0:
+        inext, jnext = T[i,j]
+        if inext == i-1 and jnext == j-1:
+            alignment[y[j]] = i
+        elif inext == i and jnext == j-1:
+            alignment[y[j]] = i+1
+        i = inext
+        j = jnext
+    alignment[y[j]] = i
+    return alignment
+
+def get_span(alginment, text):
+    i = [alignment[w] for w in text.lower().split(' ')]
+    return [min(i), max(i)+1]
+
 if __name__ == '__main__':
 
     if len(sys.argv) == 1:
@@ -20,12 +55,16 @@ if __name__ == '__main__':
 
         transcript = ' '.join([event.transcript.word for event in nlu.responses if event.HasField('transcript')])
         intent = ' '.join([event.intent.intent for event in nlu.responses if event.HasField('intent')])
+
+        alignment = align(text, transcript)
+
         entities = [
             {
                 "entity": event.entity.entity,
                 "value": event.entity.value,
                 "start_position":event.entity.start_position,
-                "end_position":event.entity.end_position
+                "end_position":event.entity.end_position,
+                "span": get_span(alignment, event.entity.value)
             }
             for event in nlu.responses if event.HasField('entity')]
         print(json.dumps({
