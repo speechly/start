@@ -6,7 +6,7 @@ This repository features a simple node command line client for calling the [Spee
 
 To run the client you'll need an application id. To get an application id apply to our beta program by sending an email to [appid@speechly.com](mailto:appid@speechly.com). There are limited seats!
 
-You will also need to have node and sox installed. 
+You will also need to have Node (version >= 12) and sox installed. 
 
 For Mac OS
 
