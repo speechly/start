@@ -77,8 +77,10 @@ class WLUServicer(object):
   """
 
   def Text(self, request, context):
-    # missing associated documentation comment in .proto file
-    pass
+    """Send text and get the intents, entities and transcripts as
+    a response.
+    *Note* The maximum message size is 16KB
+    """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')

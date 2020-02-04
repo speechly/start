@@ -36,7 +36,7 @@ def align(s1, s2):
     alignment[y[j]] = i
     return alignment
 
-def get_span(alginment, text):
+def get_span(alignment, text):
     i = [alignment[w] for w in text.lower().split(' ')]
     return [min(i), max(i)+1]
 
@@ -52,26 +52,22 @@ if __name__ == '__main__':
         started = time.time()
         nlu = speechly.wlu(text)
         ended = time.time()
-
-        transcript = ' '.join([event.transcript.word for event in nlu.responses if event.HasField('transcript')])
-        intent = ' '.join([event.intent.intent for event in nlu.responses if event.HasField('intent')])
-
-        alignment = align(text, transcript)
-
-        entities = [
-            {
-                "entity": event.entity.entity,
-                "value": event.entity.value,
-                "start_position":event.entity.start_position,
-                "end_position":event.entity.end_position,
-                "span": get_span(alignment, event.entity.value)
-            }
-            for event in nlu.responses if event.HasField('entity')]
-        print(json.dumps({
-            "phrase": text,
-            "transcript": transcript,
-            "intent":intent,
-            "entities":entities,
-            "response_time_ms": (ended - started)*1000
-        }))
+        for segment in nlu.segments:
+            alignment = align(text, segment.text)
+            entities = [
+                {
+                    "entity": entity.entity,
+                    "value": entity.value,
+                    "start_position": entity.start_position,
+                    "end_position": entity.end_position,
+                    "span": get_span(alignment, entity.value)
+                }
+                for entity in segment.entities]
+            print(json.dumps({
+                "phrase": text,
+                "transcript": segment.text,
+                "intent":segment.intent.intent,
+                "entities":entities,
+                "response_time_ms": (ended - started)*1000
+            }))
 

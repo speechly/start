@@ -20,7 +20,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='v1',
   syntax='proto3',
   serialized_options=None,
-  serialized_pb=_b('\n\x0espeechly.proto\x12\x02v1\"r\n\nSLURequest\x12\x1f\n\x06\x63onfig\x18\x01 \x01(\x0b\x32\r.v1.SLUConfigH\x00\x12\x1d\n\x05\x65vent\x18\x02 \x01(\x0b\x32\x0c.v1.SLUEventH\x00\x12\x0f\n\x05\x61udio\x18\x03 \x01(\x0cH\x00\x42\x13\n\x11streaming_request\"\x93\x01\n\tSLUConfig\x12(\n\x08\x65ncoding\x18\x01 \x01(\x0e\x32\x16.v1.SLUConfig.Encoding\x12\x10\n\x08\x63hannels\x18\x02 \x01(\x05\x12\x19\n\x11sample_rate_hertz\x18\x03 \x01(\x05\x12\x15\n\rlanguage_code\x18\x04 \x01(\t\"\x18\n\x08\x45ncoding\x12\x0c\n\x08LINEAR16\x10\x00\"K\n\x08SLUEvent\x12!\n\x05\x65vent\x18\x01 \x01(\x0e\x32\x12.v1.SLUEvent.Event\"\x1c\n\x05\x45vent\x12\t\n\x05START\x10\x00\x12\x08\n\x04STOP\x10\x01\"\xad\x03\n\x0bSLUResponse\x12)\n\ntranscript\x18\x01 \x01(\x0b\x32\x13.v1.TranscriptEventH\x00\x12!\n\x06\x65ntity\x18\x02 \x01(\x0b\x32\x0f.v1.EntityEventH\x00\x12!\n\x06intent\x18\x03 \x01(\x0b\x32\x0f.v1.IntentEventH\x00\x12*\n\x0bsegment_end\x18\x04 \x01(\x0b\x32\x13.v1.SegmentEndEventH\x00\x12<\n\x14tentative_transcript\x18\x05 \x01(\x0b\x32\x1c.v1.TentativeTranscriptEventH\x00\x12\x38\n\x12tentative_entities\x18\x06 \x01(\x0b\x32\x1a.v1.TentativeEntitiesEventH\x00\x12+\n\x10tentative_intent\x18\x07 \x01(\x0b\x32\x0f.v1.IntentEventH\x00\x12!\n\x07started\x18\x08 \x01(\x0b\x32\x0e.v1.SLUStartedH\x00\x12#\n\x08\x66inished\x18\t \x01(\x0b\x32\x0f.v1.SLUFinishedH\x00\x42\x14\n\x12streaming_response\"f\n\x18TentativeTranscriptEvent\x12\x1c\n\x14tentative_transcript\x18\x01 \x01(\t\x12,\n\x0ftentative_words\x18\x02 \x03(\x0b\x32\x13.v1.TranscriptEvent\"\x7f\n\x0fTranscriptEvent\x12\x15\n\raudio_context\x18\x01 \x01(\t\x12\x12\n\nsegment_id\x18\x02 \x01(\x05\x12\x0c\n\x04word\x18\x03 \x01(\t\x12\r\n\x05index\x18\x04 \x01(\x05\x12\x12\n\nstart_time\x18\x05 \x01(\x05\x12\x10\n\x08\x65nd_time\x18\x06 \x01(\x05\"E\n\x16TentativeEntitiesEvent\x12+\n\x12tentative_entities\x18\x01 \x03(\x0b\x32\x0f.v1.EntityEvent\"\x85\x01\n\x0b\x45ntityEvent\x12\x15\n\raudio_context\x18\x01 \x01(\t\x12\x12\n\nsegment_id\x18\x02 \x01(\x05\x12\x0e\n\x06\x65ntity\x18\x03 \x01(\t\x12\r\n\x05value\x18\x04 \x01(\t\x12\x16\n\x0estart_position\x18\x05 \x01(\x05\x12\x14\n\x0c\x65nd_position\x18\x06 \x01(\x05\"H\n\x0bIntentEvent\x12\x15\n\raudio_context\x18\x01 \x01(\t\x12\x12\n\nsegment_id\x18\x02 \x01(\x05\x12\x0e\n\x06intent\x18\x03 \x01(\t\"<\n\x0fSegmentEndEvent\x12\x15\n\raudio_context\x18\x01 \x01(\t\x12\x12\n\nsegment_id\x18\x02 \x01(\x05\"#\n\nSLUStarted\x12\x15\n\raudio_context\x18\x01 \x01(\t\"A\n\x0bSLUFinished\x12\x15\n\raudio_context\x18\x01 \x01(\t\x12\x1b\n\x05\x65rror\x18\x02 \x01(\x0b\x32\x0c.v1.SLUError\")\n\x08SLUError\x12\x0c\n\x04\x63ode\x18\x01 \x01(\t\x12\x0f\n\x07message\x18\x02 \x01(\t\"1\n\nWLURequest\x12\x15\n\rlanguage_code\x18\x01 \x01(\t\x12\x0c\n\x04text\x18\x02 \x01(\t\"1\n\x0bWLUResponse\x12\"\n\tresponses\x18\x01 \x03(\x0b\x32\x0f.v1.SLUResponse\"1\n\x0cLoginRequest\x12\x11\n\tdevice_id\x18\x01 \x01(\t\x12\x0e\n\x06\x61pp_id\x18\x02 \x01(\t\"\x1e\n\rLoginResponse\x12\r\n\x05token\x18\x01 \x01(\t26\n\x03SLU\x12/\n\x06Stream\x12\x0e.v1.SLURequest\x1a\x0f.v1.SLUResponse\"\x00(\x01\x30\x01\x32\x30\n\x03WLU\x12)\n\x04Text\x12\x0e.v1.WLURequest\x1a\x0f.v1.WLUResponse\"\x00\x32:\n\x08Identity\x12.\n\x05Login\x12\x10.v1.LoginRequest\x1a\x11.v1.LoginResponse\"\x00\x62\x06proto3')
+  serialized_pb=_b('\n\x0espeechly.proto\x12\x02v1\"r\n\nSLURequest\x12\x1f\n\x06\x63onfig\x18\x01 \x01(\x0b\x32\r.v1.SLUConfigH\x00\x12\x1d\n\x05\x65vent\x18\x02 \x01(\x0b\x32\x0c.v1.SLUEventH\x00\x12\x0f\n\x05\x61udio\x18\x03 \x01(\x0cH\x00\x42\x13\n\x11streaming_request\"\x93\x01\n\tSLUConfig\x12(\n\x08\x65ncoding\x18\x01 \x01(\x0e\x32\x16.v1.SLUConfig.Encoding\x12\x10\n\x08\x63hannels\x18\x02 \x01(\x05\x12\x19\n\x11sample_rate_hertz\x18\x03 \x01(\x05\x12\x15\n\rlanguage_code\x18\x04 \x01(\t\"\x18\n\x08\x45ncoding\x12\x0c\n\x08LINEAR16\x10\x00\"K\n\x08SLUEvent\x12!\n\x05\x65vent\x18\x01 \x01(\x0e\x32\x12.v1.SLUEvent.Event\"\x1c\n\x05\x45vent\x12\t\n\x05START\x10\x00\x12\x08\n\x04STOP\x10\x01\"\xca\x03\n\x0bSLUResponse\x12\x15\n\raudio_context\x18\x01 \x01(\t\x12\x12\n\nsegment_id\x18\x02 \x01(\x05\x12\'\n\ntranscript\x18\x03 \x01(\x0b\x32\x11.v1.SLUTranscriptH\x00\x12\x1f\n\x06\x65ntity\x18\x04 \x01(\x0b\x32\r.v1.SLUEntityH\x00\x12\x1f\n\x06intent\x18\x05 \x01(\x0b\x32\r.v1.SLUIntentH\x00\x12(\n\x0bsegment_end\x18\x06 \x01(\x0b\x32\x11.v1.SLUSegmentEndH\x00\x12:\n\x14tentative_transcript\x18\x07 \x01(\x0b\x32\x1a.v1.SLUTentativeTranscriptH\x00\x12\x36\n\x12tentative_entities\x18\x08 \x01(\x0b\x32\x18.v1.SLUTentativeEntitiesH\x00\x12)\n\x10tentative_intent\x18\t \x01(\x0b\x32\r.v1.SLUIntentH\x00\x12!\n\x07started\x18\n \x01(\x0b\x32\x0e.v1.SLUStartedH\x00\x12#\n\x08\x66inished\x18\x0b \x01(\x0b\x32\x0f.v1.SLUFinishedH\x00\x42\x14\n\x12streaming_response\"b\n\x16SLUTentativeTranscript\x12\x1c\n\x14tentative_transcript\x18\x01 \x01(\t\x12*\n\x0ftentative_words\x18\x02 \x03(\x0b\x32\x11.v1.SLUTranscript\"R\n\rSLUTranscript\x12\x0c\n\x04word\x18\x01 \x01(\t\x12\r\n\x05index\x18\x02 \x01(\x05\x12\x12\n\nstart_time\x18\x03 \x01(\x05\x12\x10\n\x08\x65nd_time\x18\x04 \x01(\x05\"A\n\x14SLUTentativeEntities\x12)\n\x12tentative_entities\x18\x01 \x03(\x0b\x32\r.v1.SLUEntity\"X\n\tSLUEntity\x12\x0e\n\x06\x65ntity\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t\x12\x16\n\x0estart_position\x18\x03 \x01(\x05\x12\x14\n\x0c\x65nd_position\x18\x04 \x01(\x05\"\x1b\n\tSLUIntent\x12\x0e\n\x06intent\x18\x01 \x01(\t\"\x0f\n\rSLUSegmentEnd\"\x0c\n\nSLUStarted\"*\n\x0bSLUFinished\x12\x1b\n\x05\x65rror\x18\x02 \x01(\x0b\x32\x0c.v1.SLUError\")\n\x08SLUError\x12\x0c\n\x04\x63ode\x18\x01 \x01(\t\x12\x0f\n\x07message\x18\x02 \x01(\t\"1\n\nWLURequest\x12\x15\n\rlanguage_code\x18\x01 \x01(\t\x12\x0c\n\x04text\x18\x02 \x01(\t\"/\n\x0bWLUResponse\x12 \n\x08segments\x18\x01 \x03(\x0b\x32\x0e.v1.WLUSegment\"x\n\nWLUSegment\x12\x0c\n\x04text\x18\x01 \x01(\t\x12\x1c\n\x06tokens\x18\x02 \x03(\x0b\x32\x0c.v1.WLUToken\x12\x1f\n\x08\x65ntities\x18\x03 \x03(\x0b\x32\r.v1.WLUEntity\x12\x1d\n\x06intent\x18\x04 \x01(\x0b\x32\r.v1.WLUIntent\"\'\n\x08WLUToken\x12\x0c\n\x04word\x18\x01 \x01(\t\x12\r\n\x05index\x18\x02 \x01(\x05\"X\n\tWLUEntity\x12\x0e\n\x06\x65ntity\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t\x12\x16\n\x0estart_position\x18\x03 \x01(\x05\x12\x14\n\x0c\x65nd_position\x18\x04 \x01(\x05\"\x1b\n\tWLUIntent\x12\x0e\n\x06intent\x18\x01 \x01(\t\"1\n\x0cLoginRequest\x12\x11\n\tdevice_id\x18\x01 \x01(\t\x12\x0e\n\x06\x61pp_id\x18\x02 \x01(\t\"\x1e\n\rLoginResponse\x12\r\n\x05token\x18\x01 \x01(\t26\n\x03SLU\x12/\n\x06Stream\x12\x0e.v1.SLURequest\x1a\x0f.v1.SLUResponse\"\x00(\x01\x30\x01\x32\x30\n\x03WLU\x12)\n\x04Text\x12\x0e.v1.WLURequest\x1a\x0f.v1.WLUResponse\"\x00\x32:\n\x08Identity\x12.\n\x05Login\x12\x10.v1.LoginRequest\x1a\x11.v1.LoginResponse\"\x00\x62\x06proto3')
 )
 
 
@@ -207,64 +207,78 @@ _SLURESPONSE = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='transcript', full_name='v1.SLUResponse.transcript', index=0,
-      number=1, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
+      name='audio_context', full_name='v1.SLUResponse.audio_context', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='entity', full_name='v1.SLUResponse.entity', index=1,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
+      name='segment_id', full_name='v1.SLUResponse.segment_id', index=1,
+      number=2, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='intent', full_name='v1.SLUResponse.intent', index=2,
+      name='transcript', full_name='v1.SLUResponse.transcript', index=2,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='segment_end', full_name='v1.SLUResponse.segment_end', index=3,
+      name='entity', full_name='v1.SLUResponse.entity', index=3,
       number=4, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='tentative_transcript', full_name='v1.SLUResponse.tentative_transcript', index=4,
+      name='intent', full_name='v1.SLUResponse.intent', index=4,
       number=5, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='tentative_entities', full_name='v1.SLUResponse.tentative_entities', index=5,
+      name='segment_end', full_name='v1.SLUResponse.segment_end', index=5,
       number=6, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='tentative_intent', full_name='v1.SLUResponse.tentative_intent', index=6,
+      name='tentative_transcript', full_name='v1.SLUResponse.tentative_transcript', index=6,
       number=7, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='started', full_name='v1.SLUResponse.started', index=7,
+      name='tentative_entities', full_name='v1.SLUResponse.tentative_entities', index=7,
       number=8, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='finished', full_name='v1.SLUResponse.finished', index=8,
+      name='tentative_intent', full_name='v1.SLUResponse.tentative_intent', index=8,
       number=9, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='started', full_name='v1.SLUResponse.started', index=9,
+      number=10, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='finished', full_name='v1.SLUResponse.finished', index=10,
+      number=11, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -285,26 +299,26 @@ _SLURESPONSE = _descriptor.Descriptor(
       index=0, containing_type=None, fields=[]),
   ],
   serialized_start=366,
-  serialized_end=795,
+  serialized_end=824,
 )
 
 
-_TENTATIVETRANSCRIPTEVENT = _descriptor.Descriptor(
-  name='TentativeTranscriptEvent',
-  full_name='v1.TentativeTranscriptEvent',
+_SLUTENTATIVETRANSCRIPT = _descriptor.Descriptor(
+  name='SLUTentativeTranscript',
+  full_name='v1.SLUTentativeTranscript',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='tentative_transcript', full_name='v1.TentativeTranscriptEvent.tentative_transcript', index=0,
+      name='tentative_transcript', full_name='v1.SLUTentativeTranscript.tentative_transcript', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='tentative_words', full_name='v1.TentativeTranscriptEvent.tentative_words', index=1,
+      name='tentative_words', full_name='v1.SLUTentativeTranscript.tentative_words', index=1,
       number=2, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
@@ -322,56 +336,42 @@ _TENTATIVETRANSCRIPTEVENT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=797,
-  serialized_end=899,
+  serialized_start=826,
+  serialized_end=924,
 )
 
 
-_TRANSCRIPTEVENT = _descriptor.Descriptor(
-  name='TranscriptEvent',
-  full_name='v1.TranscriptEvent',
+_SLUTRANSCRIPT = _descriptor.Descriptor(
+  name='SLUTranscript',
+  full_name='v1.SLUTranscript',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='audio_context', full_name='v1.TranscriptEvent.audio_context', index=0,
+      name='word', full_name='v1.SLUTranscript.word', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='segment_id', full_name='v1.TranscriptEvent.segment_id', index=1,
+      name='index', full_name='v1.SLUTranscript.index', index=1,
       number=2, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='word', full_name='v1.TranscriptEvent.word', index=2,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
+      name='start_time', full_name='v1.SLUTranscript.start_time', index=2,
+      number=3, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='index', full_name='v1.TranscriptEvent.index', index=3,
+      name='end_time', full_name='v1.SLUTranscript.end_time', index=3,
       number=4, type=5, cpp_type=1, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='start_time', full_name='v1.TranscriptEvent.start_time', index=4,
-      number=5, type=5, cpp_type=1, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='end_time', full_name='v1.TranscriptEvent.end_time', index=5,
-      number=6, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -388,20 +388,20 @@ _TRANSCRIPTEVENT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=901,
-  serialized_end=1028,
+  serialized_start=926,
+  serialized_end=1008,
 )
 
 
-_TENTATIVEENTITIESEVENT = _descriptor.Descriptor(
-  name='TentativeEntitiesEvent',
-  full_name='v1.TentativeEntitiesEvent',
+_SLUTENTATIVEENTITIES = _descriptor.Descriptor(
+  name='SLUTentativeEntities',
+  full_name='v1.SLUTentativeEntities',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='tentative_entities', full_name='v1.TentativeEntitiesEvent.tentative_entities', index=0,
+      name='tentative_entities', full_name='v1.SLUTentativeEntities.tentative_entities', index=0,
       number=1, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
@@ -419,56 +419,42 @@ _TENTATIVEENTITIESEVENT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1030,
-  serialized_end=1099,
+  serialized_start=1010,
+  serialized_end=1075,
 )
 
 
-_ENTITYEVENT = _descriptor.Descriptor(
-  name='EntityEvent',
-  full_name='v1.EntityEvent',
+_SLUENTITY = _descriptor.Descriptor(
+  name='SLUEntity',
+  full_name='v1.SLUEntity',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='audio_context', full_name='v1.EntityEvent.audio_context', index=0,
+      name='entity', full_name='v1.SLUEntity.entity', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='segment_id', full_name='v1.EntityEvent.segment_id', index=1,
-      number=2, type=5, cpp_type=1, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='entity', full_name='v1.EntityEvent.entity', index=2,
-      number=3, type=9, cpp_type=9, label=1,
+      name='value', full_name='v1.SLUEntity.value', index=1,
+      number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='value', full_name='v1.EntityEvent.value', index=3,
-      number=4, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='start_position', full_name='v1.EntityEvent.start_position', index=4,
-      number=5, type=5, cpp_type=1, label=1,
+      name='start_position', full_name='v1.SLUEntity.start_position', index=2,
+      number=3, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='end_position', full_name='v1.EntityEvent.end_position', index=5,
-      number=6, type=5, cpp_type=1, label=1,
+      name='end_position', full_name='v1.SLUEntity.end_position', index=3,
+      number=4, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -485,35 +471,21 @@ _ENTITYEVENT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1102,
-  serialized_end=1235,
+  serialized_start=1077,
+  serialized_end=1165,
 )
 
 
-_INTENTEVENT = _descriptor.Descriptor(
-  name='IntentEvent',
-  full_name='v1.IntentEvent',
+_SLUINTENT = _descriptor.Descriptor(
+  name='SLUIntent',
+  full_name='v1.SLUIntent',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='audio_context', full_name='v1.IntentEvent.audio_context', index=0,
+      name='intent', full_name='v1.SLUIntent.intent', index=0,
       number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='segment_id', full_name='v1.IntentEvent.segment_id', index=1,
-      number=2, type=5, cpp_type=1, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='intent', full_name='v1.IntentEvent.intent', index=2,
-      number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -530,32 +502,18 @@ _INTENTEVENT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1237,
-  serialized_end=1309,
+  serialized_start=1167,
+  serialized_end=1194,
 )
 
 
-_SEGMENTENDEVENT = _descriptor.Descriptor(
-  name='SegmentEndEvent',
-  full_name='v1.SegmentEndEvent',
+_SLUSEGMENTEND = _descriptor.Descriptor(
+  name='SLUSegmentEnd',
+  full_name='v1.SLUSegmentEnd',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
-    _descriptor.FieldDescriptor(
-      name='audio_context', full_name='v1.SegmentEndEvent.audio_context', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='segment_id', full_name='v1.SegmentEndEvent.segment_id', index=1,
-      number=2, type=5, cpp_type=1, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -568,8 +526,8 @@ _SEGMENTENDEVENT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1311,
-  serialized_end=1371,
+  serialized_start=1196,
+  serialized_end=1211,
 )
 
 
@@ -580,13 +538,6 @@ _SLUSTARTED = _descriptor.Descriptor(
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
-    _descriptor.FieldDescriptor(
-      name='audio_context', full_name='v1.SLUStarted.audio_context', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -599,8 +550,8 @@ _SLUSTARTED = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1373,
-  serialized_end=1408,
+  serialized_start=1213,
+  serialized_end=1225,
 )
 
 
@@ -612,14 +563,7 @@ _SLUFINISHED = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='audio_context', full_name='v1.SLUFinished.audio_context', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='error', full_name='v1.SLUFinished.error', index=1,
+      name='error', full_name='v1.SLUFinished.error', index=0,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -637,8 +581,8 @@ _SLUFINISHED = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1410,
-  serialized_end=1475,
+  serialized_start=1227,
+  serialized_end=1269,
 )
 
 
@@ -675,8 +619,8 @@ _SLUERROR = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1477,
-  serialized_end=1518,
+  serialized_start=1271,
+  serialized_end=1312,
 )
 
 
@@ -713,8 +657,8 @@ _WLUREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1520,
-  serialized_end=1569,
+  serialized_start=1314,
+  serialized_end=1363,
 )
 
 
@@ -726,7 +670,7 @@ _WLURESPONSE = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='responses', full_name='v1.WLUResponse.responses', index=0,
+      name='segments', full_name='v1.WLUResponse.segments', index=0,
       number=1, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
@@ -744,8 +688,181 @@ _WLURESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1571,
-  serialized_end=1620,
+  serialized_start=1365,
+  serialized_end=1412,
+)
+
+
+_WLUSEGMENT = _descriptor.Descriptor(
+  name='WLUSegment',
+  full_name='v1.WLUSegment',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='text', full_name='v1.WLUSegment.text', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='tokens', full_name='v1.WLUSegment.tokens', index=1,
+      number=2, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='entities', full_name='v1.WLUSegment.entities', index=2,
+      number=3, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='intent', full_name='v1.WLUSegment.intent', index=3,
+      number=4, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1414,
+  serialized_end=1534,
+)
+
+
+_WLUTOKEN = _descriptor.Descriptor(
+  name='WLUToken',
+  full_name='v1.WLUToken',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='word', full_name='v1.WLUToken.word', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='index', full_name='v1.WLUToken.index', index=1,
+      number=2, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1536,
+  serialized_end=1575,
+)
+
+
+_WLUENTITY = _descriptor.Descriptor(
+  name='WLUEntity',
+  full_name='v1.WLUEntity',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='entity', full_name='v1.WLUEntity.entity', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='value', full_name='v1.WLUEntity.value', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='start_position', full_name='v1.WLUEntity.start_position', index=2,
+      number=3, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='end_position', full_name='v1.WLUEntity.end_position', index=3,
+      number=4, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1577,
+  serialized_end=1665,
+)
+
+
+_WLUINTENT = _descriptor.Descriptor(
+  name='WLUIntent',
+  full_name='v1.WLUIntent',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='intent', full_name='v1.WLUIntent.intent', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1667,
+  serialized_end=1694,
 )
 
 
@@ -782,8 +899,8 @@ _LOGINREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1622,
-  serialized_end=1671,
+  serialized_start=1696,
+  serialized_end=1745,
 )
 
 
@@ -813,8 +930,8 @@ _LOGINRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1673,
-  serialized_end=1703,
+  serialized_start=1747,
+  serialized_end=1777,
 )
 
 _SLUREQUEST.fields_by_name['config'].message_type = _SLUCONFIG
@@ -832,13 +949,13 @@ _SLUCONFIG.fields_by_name['encoding'].enum_type = _SLUCONFIG_ENCODING
 _SLUCONFIG_ENCODING.containing_type = _SLUCONFIG
 _SLUEVENT.fields_by_name['event'].enum_type = _SLUEVENT_EVENT
 _SLUEVENT_EVENT.containing_type = _SLUEVENT
-_SLURESPONSE.fields_by_name['transcript'].message_type = _TRANSCRIPTEVENT
-_SLURESPONSE.fields_by_name['entity'].message_type = _ENTITYEVENT
-_SLURESPONSE.fields_by_name['intent'].message_type = _INTENTEVENT
-_SLURESPONSE.fields_by_name['segment_end'].message_type = _SEGMENTENDEVENT
-_SLURESPONSE.fields_by_name['tentative_transcript'].message_type = _TENTATIVETRANSCRIPTEVENT
-_SLURESPONSE.fields_by_name['tentative_entities'].message_type = _TENTATIVEENTITIESEVENT
-_SLURESPONSE.fields_by_name['tentative_intent'].message_type = _INTENTEVENT
+_SLURESPONSE.fields_by_name['transcript'].message_type = _SLUTRANSCRIPT
+_SLURESPONSE.fields_by_name['entity'].message_type = _SLUENTITY
+_SLURESPONSE.fields_by_name['intent'].message_type = _SLUINTENT
+_SLURESPONSE.fields_by_name['segment_end'].message_type = _SLUSEGMENTEND
+_SLURESPONSE.fields_by_name['tentative_transcript'].message_type = _SLUTENTATIVETRANSCRIPT
+_SLURESPONSE.fields_by_name['tentative_entities'].message_type = _SLUTENTATIVEENTITIES
+_SLURESPONSE.fields_by_name['tentative_intent'].message_type = _SLUINTENT
 _SLURESPONSE.fields_by_name['started'].message_type = _SLUSTARTED
 _SLURESPONSE.fields_by_name['finished'].message_type = _SLUFINISHED
 _SLURESPONSE.oneofs_by_name['streaming_response'].fields.append(
@@ -868,25 +985,32 @@ _SLURESPONSE.fields_by_name['started'].containing_oneof = _SLURESPONSE.oneofs_by
 _SLURESPONSE.oneofs_by_name['streaming_response'].fields.append(
   _SLURESPONSE.fields_by_name['finished'])
 _SLURESPONSE.fields_by_name['finished'].containing_oneof = _SLURESPONSE.oneofs_by_name['streaming_response']
-_TENTATIVETRANSCRIPTEVENT.fields_by_name['tentative_words'].message_type = _TRANSCRIPTEVENT
-_TENTATIVEENTITIESEVENT.fields_by_name['tentative_entities'].message_type = _ENTITYEVENT
+_SLUTENTATIVETRANSCRIPT.fields_by_name['tentative_words'].message_type = _SLUTRANSCRIPT
+_SLUTENTATIVEENTITIES.fields_by_name['tentative_entities'].message_type = _SLUENTITY
 _SLUFINISHED.fields_by_name['error'].message_type = _SLUERROR
-_WLURESPONSE.fields_by_name['responses'].message_type = _SLURESPONSE
+_WLURESPONSE.fields_by_name['segments'].message_type = _WLUSEGMENT
+_WLUSEGMENT.fields_by_name['tokens'].message_type = _WLUTOKEN
+_WLUSEGMENT.fields_by_name['entities'].message_type = _WLUENTITY
+_WLUSEGMENT.fields_by_name['intent'].message_type = _WLUINTENT
 DESCRIPTOR.message_types_by_name['SLURequest'] = _SLUREQUEST
 DESCRIPTOR.message_types_by_name['SLUConfig'] = _SLUCONFIG
 DESCRIPTOR.message_types_by_name['SLUEvent'] = _SLUEVENT
 DESCRIPTOR.message_types_by_name['SLUResponse'] = _SLURESPONSE
-DESCRIPTOR.message_types_by_name['TentativeTranscriptEvent'] = _TENTATIVETRANSCRIPTEVENT
-DESCRIPTOR.message_types_by_name['TranscriptEvent'] = _TRANSCRIPTEVENT
-DESCRIPTOR.message_types_by_name['TentativeEntitiesEvent'] = _TENTATIVEENTITIESEVENT
-DESCRIPTOR.message_types_by_name['EntityEvent'] = _ENTITYEVENT
-DESCRIPTOR.message_types_by_name['IntentEvent'] = _INTENTEVENT
-DESCRIPTOR.message_types_by_name['SegmentEndEvent'] = _SEGMENTENDEVENT
+DESCRIPTOR.message_types_by_name['SLUTentativeTranscript'] = _SLUTENTATIVETRANSCRIPT
+DESCRIPTOR.message_types_by_name['SLUTranscript'] = _SLUTRANSCRIPT
+DESCRIPTOR.message_types_by_name['SLUTentativeEntities'] = _SLUTENTATIVEENTITIES
+DESCRIPTOR.message_types_by_name['SLUEntity'] = _SLUENTITY
+DESCRIPTOR.message_types_by_name['SLUIntent'] = _SLUINTENT
+DESCRIPTOR.message_types_by_name['SLUSegmentEnd'] = _SLUSEGMENTEND
 DESCRIPTOR.message_types_by_name['SLUStarted'] = _SLUSTARTED
 DESCRIPTOR.message_types_by_name['SLUFinished'] = _SLUFINISHED
 DESCRIPTOR.message_types_by_name['SLUError'] = _SLUERROR
 DESCRIPTOR.message_types_by_name['WLURequest'] = _WLUREQUEST
 DESCRIPTOR.message_types_by_name['WLUResponse'] = _WLURESPONSE
+DESCRIPTOR.message_types_by_name['WLUSegment'] = _WLUSEGMENT
+DESCRIPTOR.message_types_by_name['WLUToken'] = _WLUTOKEN
+DESCRIPTOR.message_types_by_name['WLUEntity'] = _WLUENTITY
+DESCRIPTOR.message_types_by_name['WLUIntent'] = _WLUINTENT
 DESCRIPTOR.message_types_by_name['LoginRequest'] = _LOGINREQUEST
 DESCRIPTOR.message_types_by_name['LoginResponse'] = _LOGINRESPONSE
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
@@ -919,47 +1043,47 @@ SLUResponse = _reflection.GeneratedProtocolMessageType('SLUResponse', (_message.
   })
 _sym_db.RegisterMessage(SLUResponse)
 
-TentativeTranscriptEvent = _reflection.GeneratedProtocolMessageType('TentativeTranscriptEvent', (_message.Message,), {
-  'DESCRIPTOR' : _TENTATIVETRANSCRIPTEVENT,
+SLUTentativeTranscript = _reflection.GeneratedProtocolMessageType('SLUTentativeTranscript', (_message.Message,), {
+  'DESCRIPTOR' : _SLUTENTATIVETRANSCRIPT,
   '__module__' : 'speechly_pb2'
-  # @@protoc_insertion_point(class_scope:v1.TentativeTranscriptEvent)
+  # @@protoc_insertion_point(class_scope:v1.SLUTentativeTranscript)
   })
-_sym_db.RegisterMessage(TentativeTranscriptEvent)
+_sym_db.RegisterMessage(SLUTentativeTranscript)
 
-TranscriptEvent = _reflection.GeneratedProtocolMessageType('TranscriptEvent', (_message.Message,), {
-  'DESCRIPTOR' : _TRANSCRIPTEVENT,
+SLUTranscript = _reflection.GeneratedProtocolMessageType('SLUTranscript', (_message.Message,), {
+  'DESCRIPTOR' : _SLUTRANSCRIPT,
   '__module__' : 'speechly_pb2'
-  # @@protoc_insertion_point(class_scope:v1.TranscriptEvent)
+  # @@protoc_insertion_point(class_scope:v1.SLUTranscript)
   })
-_sym_db.RegisterMessage(TranscriptEvent)
+_sym_db.RegisterMessage(SLUTranscript)
 
-TentativeEntitiesEvent = _reflection.GeneratedProtocolMessageType('TentativeEntitiesEvent', (_message.Message,), {
-  'DESCRIPTOR' : _TENTATIVEENTITIESEVENT,
+SLUTentativeEntities = _reflection.GeneratedProtocolMessageType('SLUTentativeEntities', (_message.Message,), {
+  'DESCRIPTOR' : _SLUTENTATIVEENTITIES,
   '__module__' : 'speechly_pb2'
-  # @@protoc_insertion_point(class_scope:v1.TentativeEntitiesEvent)
+  # @@protoc_insertion_point(class_scope:v1.SLUTentativeEntities)
   })
-_sym_db.RegisterMessage(TentativeEntitiesEvent)
+_sym_db.RegisterMessage(SLUTentativeEntities)
 
-EntityEvent = _reflection.GeneratedProtocolMessageType('EntityEvent', (_message.Message,), {
-  'DESCRIPTOR' : _ENTITYEVENT,
+SLUEntity = _reflection.GeneratedProtocolMessageType('SLUEntity', (_message.Message,), {
+  'DESCRIPTOR' : _SLUENTITY,
   '__module__' : 'speechly_pb2'
-  # @@protoc_insertion_point(class_scope:v1.EntityEvent)
+  # @@protoc_insertion_point(class_scope:v1.SLUEntity)
   })
-_sym_db.RegisterMessage(EntityEvent)
+_sym_db.RegisterMessage(SLUEntity)
 
-IntentEvent = _reflection.GeneratedProtocolMessageType('IntentEvent', (_message.Message,), {
-  'DESCRIPTOR' : _INTENTEVENT,
+SLUIntent = _reflection.GeneratedProtocolMessageType('SLUIntent', (_message.Message,), {
+  'DESCRIPTOR' : _SLUINTENT,
   '__module__' : 'speechly_pb2'
-  # @@protoc_insertion_point(class_scope:v1.IntentEvent)
+  # @@protoc_insertion_point(class_scope:v1.SLUIntent)
   })
-_sym_db.RegisterMessage(IntentEvent)
+_sym_db.RegisterMessage(SLUIntent)
 
-SegmentEndEvent = _reflection.GeneratedProtocolMessageType('SegmentEndEvent', (_message.Message,), {
-  'DESCRIPTOR' : _SEGMENTENDEVENT,
+SLUSegmentEnd = _reflection.GeneratedProtocolMessageType('SLUSegmentEnd', (_message.Message,), {
+  'DESCRIPTOR' : _SLUSEGMENTEND,
   '__module__' : 'speechly_pb2'
-  # @@protoc_insertion_point(class_scope:v1.SegmentEndEvent)
+  # @@protoc_insertion_point(class_scope:v1.SLUSegmentEnd)
   })
-_sym_db.RegisterMessage(SegmentEndEvent)
+_sym_db.RegisterMessage(SLUSegmentEnd)
 
 SLUStarted = _reflection.GeneratedProtocolMessageType('SLUStarted', (_message.Message,), {
   'DESCRIPTOR' : _SLUSTARTED,
@@ -996,6 +1120,34 @@ WLUResponse = _reflection.GeneratedProtocolMessageType('WLUResponse', (_message.
   })
 _sym_db.RegisterMessage(WLUResponse)
 
+WLUSegment = _reflection.GeneratedProtocolMessageType('WLUSegment', (_message.Message,), {
+  'DESCRIPTOR' : _WLUSEGMENT,
+  '__module__' : 'speechly_pb2'
+  # @@protoc_insertion_point(class_scope:v1.WLUSegment)
+  })
+_sym_db.RegisterMessage(WLUSegment)
+
+WLUToken = _reflection.GeneratedProtocolMessageType('WLUToken', (_message.Message,), {
+  'DESCRIPTOR' : _WLUTOKEN,
+  '__module__' : 'speechly_pb2'
+  # @@protoc_insertion_point(class_scope:v1.WLUToken)
+  })
+_sym_db.RegisterMessage(WLUToken)
+
+WLUEntity = _reflection.GeneratedProtocolMessageType('WLUEntity', (_message.Message,), {
+  'DESCRIPTOR' : _WLUENTITY,
+  '__module__' : 'speechly_pb2'
+  # @@protoc_insertion_point(class_scope:v1.WLUEntity)
+  })
+_sym_db.RegisterMessage(WLUEntity)
+
+WLUIntent = _reflection.GeneratedProtocolMessageType('WLUIntent', (_message.Message,), {
+  'DESCRIPTOR' : _WLUINTENT,
+  '__module__' : 'speechly_pb2'
+  # @@protoc_insertion_point(class_scope:v1.WLUIntent)
+  })
+_sym_db.RegisterMessage(WLUIntent)
+
 LoginRequest = _reflection.GeneratedProtocolMessageType('LoginRequest', (_message.Message,), {
   'DESCRIPTOR' : _LOGINREQUEST,
   '__module__' : 'speechly_pb2'
@@ -1018,8 +1170,8 @@ _SLU = _descriptor.ServiceDescriptor(
   file=DESCRIPTOR,
   index=0,
   serialized_options=None,
-  serialized_start=1705,
-  serialized_end=1759,
+  serialized_start=1779,
+  serialized_end=1833,
   methods=[
   _descriptor.MethodDescriptor(
     name='Stream',
@@ -1042,8 +1194,8 @@ _WLU = _descriptor.ServiceDescriptor(
   file=DESCRIPTOR,
   index=1,
   serialized_options=None,
-  serialized_start=1761,
-  serialized_end=1809,
+  serialized_start=1835,
+  serialized_end=1883,
   methods=[
   _descriptor.MethodDescriptor(
     name='Text',
@@ -1066,8 +1218,8 @@ _IDENTITY = _descriptor.ServiceDescriptor(
   file=DESCRIPTOR,
   index=2,
   serialized_options=None,
-  serialized_start=1811,
-  serialized_end=1869,
+  serialized_start=1885,
+  serialized_end=1943,
   methods=[
   _descriptor.MethodDescriptor(
     name='Login',
