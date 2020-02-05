@@ -1,10 +1,85 @@
 const readline = require("readline");
 const recorder = require("node-record-lpcm16");
 const { finished, Writable } = require("stream");
-const { getSpeechlyClient, getPrinter } = require("./speechly");
+const { getSpeechlyClient } = require("./speechly");
+
+const argv = require("yargs").argv;
+const printRaw = argv.raw;
 
 readline.emitKeypressEvents(process.stdin);
 process.stdin.setRawMode(true);
+
+getPrinter = () => {
+  let context = {};
+
+  const getSegmentState = key => {
+    const segment = context[key] || {
+      transcript: "",
+      intent: "",
+      entities: "",
+      tentativeTranscript: "",
+      tentativeIntent: "",
+      tentativeEntities: "",
+      transcriptDraft: console.draft(),
+      intentDraft: console.draft(),
+      entityDraft: console.draft()
+    };
+    return segment;
+  };
+
+  const drawSegment = segment => {
+    const transcript = `Transcript:${segment.transcript} ${segment.tentativeTranscript}`;
+    const intent = `Intent: ${segment.intent}`;
+    const entities = `Entities:${segment.entities} ${segment.tentativeEntities}`;
+    const terminalWidth = process.stdout.columns;
+
+    segment.transcriptDraft(transcript.substring(Math.max(0, transcript.length - terminalWidth), transcript.length));
+    segment.intentDraft(intent);
+    segment.entityDraft(entities.substring(Math.max(0, entities.length - terminalWidth), entities.length));
+  };
+
+  return function(event) {
+    if (printRaw) {
+      console.dir(event, { depth: null });
+      return;
+    }
+    const eventType = event.streamingResponse;
+    if (eventType === "started") return;
+    if (eventType === "finished") {
+      return;
+    }
+    const data = event[eventType];
+    const audioContext = event.audioContext;
+    const segmentId = event.segmentId;
+    const key = `${audioContext}-${segmentId}`;
+    const segmentState = getSegmentState(key);
+    if (eventType === "segmentEnd") {
+    } else if (eventType.startsWith("tentative")) {
+      if (eventType.toLowerCase().endsWith("transcript")) {
+        segmentState.tentativeTranscript = data.tentativeWords.map(word => word.word).join(" ");
+      } else if (eventType.toLowerCase().endsWith("entities")) {
+        segmentState.tentativeEntities = data.tentativeEntities
+          .map(entity => `${entity.entity}(${entity["value"]})`)
+          .join(" ");
+      } else if (eventType.toLowerCase().endsWith("intent")) {
+        segmentState.intent = data.intent;
+      }
+      context[key] = segmentState;
+    } else {
+      if (eventType === "entity") {
+        segmentState.entities = `${segmentState.entities} ${data.entity}(${data["value"]})`;
+        segmentState.tentativeEntities = "";
+      } else if (eventType === "intent") {
+        segmentState.intent = data.intent;
+      } else if (eventType === "transcript") {
+        segmentState.transcript = `${segmentState.transcript} ${data.word}`;
+        segmentState.tentativeTranscript = "";
+      }
+      context[key] = segmentState;
+    }
+    drawSegment(segmentState);
+  };
+};
 
 (async function() {
   try {

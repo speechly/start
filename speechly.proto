@@ -121,61 +121,52 @@ message SLUEvent {
 // `SluFinished` is sent when an audio context is finished, either by the
 // client stopping the utterance, or by an error.
 message SLUResponse {
+    string audio_context = 1;  // identifier to match server responses
+                               // to an audio context.
+    int32 segment_id = 2;
     oneof streaming_response {
-        TranscriptEvent transcript = 1;
-        EntityEvent entity = 2;
-        IntentEvent intent = 3;
-        SegmentEndEvent segment_end = 4;
+        SLUTranscript transcript = 3;
+        SLUEntity entity = 4;
+        SLUIntent intent = 5;
+        SLUSegmentEnd segment_end = 6;
 
-        TentativeTranscriptEvent tentative_transcript = 5;
-        TentativeEntitiesEvent tentative_entities = 6;
-        IntentEvent tentative_intent = 7;
+        SLUTentativeTranscript tentative_transcript = 7;
+        SLUTentativeEntities tentative_entities = 8;
+        SLUIntent tentative_intent = 9;
 
-        SLUStarted started = 8;
-        SLUFinished finished = 9;
+        SLUStarted started = 10;
+        SLUFinished finished = 11;
     }
 }
-message TentativeTranscriptEvent {
+message SLUTentativeTranscript {
     string tentative_transcript = 1;
-    repeated TranscriptEvent tentative_words = 2;
+    repeated SLUTranscript tentative_words = 2;
 }
-message TranscriptEvent {
-    string audio_context = 1;
-    int32 segment_id = 2;
-    string word = 3;
-    int32 index = 4;
-    int32 start_time = 5;
-    int32 end_time = 6;
+message SLUTranscript {
+    string word = 1;
+    int32 index = 2;
+    int32 start_time = 3;
+    int32 end_time = 4;
 }
-message TentativeEntitiesEvent {
-    repeated EntityEvent tentative_entities = 1;
+message SLUTentativeEntities {
+    repeated SLUEntity tentative_entities = 1;
 }
-message EntityEvent {
-    string audio_context = 1;
-    int32 segment_id = 2;
-    string entity = 3;
-    string value = 4;
-    int32 start_position = 5;
-    int32 end_position = 6;
+message SLUEntity {
+    string entity = 1;
+    string value = 2;
+    int32 start_position = 3;
+    int32 end_position = 4;
 }
-message IntentEvent {
-    string audio_context = 1;
-    int32 segment_id = 2;
-    string intent = 3;
+message SLUIntent {
+    string intent = 1;
 }
-message SegmentEndEvent {
-    string audio_context = 1;
-    int32 segment_id = 2;
+message SLUSegmentEnd {
 }
 // Message sent when a new audio context has started.
 message SLUStarted {
-    string audio_context = 1; // identifier to match server responses
-                              // to an audio context.
 }
 // Message sent when an audio context is finished.
 message SLUFinished {
-    string audio_context = 1;
-
     // If the audio context finished with an error, then this field
     // contains a value.
     SLUError error = 2;
@@ -188,16 +179,36 @@ message SLUError {
 
 // Speechly written language understanding service
 service WLU {
+    // Send text and get the intents, entities and transcripts as
+    // a response.
+    // *Note* The maximum message size is 16KB
     rpc Text(WLURequest) returns (WLUResponse) {}
 }
-
 message WLURequest {
     string language_code = 1;
     string text = 2;
 }
-
 message WLUResponse {
-    repeated SLUResponse responses = 1;
+    repeated WLUSegment segments = 1;
+}
+message WLUSegment {
+    string text = 1;
+    repeated WLUToken tokens = 2;
+    repeated WLUEntity entities = 3;
+    WLUIntent intent = 4;
+}
+message WLUToken {
+    string word = 1;
+    int32 index = 2;
+}
+message WLUEntity {
+    string entity = 1;
+    string value = 2;
+    int32 start_position = 3;
+    int32 end_position = 4;
+}
+message WLUIntent {
+    string intent = 1;
 }
 
 // Authentication and identity service

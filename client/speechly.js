@@ -5,9 +5,6 @@ const grpc = require("grpc");
 const protoLoader = require("@grpc/proto-loader");
 const prompts = require("prompts");
 const uuid = require("uuid");
-const argv = require("yargs").argv;
-
-const printRaw = argv.raw;
 
 exports.getSpeechlyClient = async () => {
   const keys = {};
@@ -50,96 +47,6 @@ exports.getSpeechlyClient = async () => {
     fs.writeFileSync(keyfile, JSON.stringify(keys, undefined, 2));
   }
   return createSpeechlyClient(keys.token, keys.languageCode);
-};
-
-exports.getPrinter = () => {
-  let context = {};
-
-  const getSegmentState = key => {
-    const segment = context[key] || {
-      transcript: "",
-      intent: "",
-      entities: "",
-      tentativeTranscript: "",
-      tentativeIntent: "",
-      tentativeEntities: "",
-      transcriptDraft: console.draft(),
-      intentDraft: console.draft(),
-      entityDraft: console.draft()
-    };
-    return segment;
-  };
-
-  const getAudioContext = data => {
-    if ("tentativeWords" in data) {
-      return data.tentativeWords[0].audioContext;
-    } else if ("tentativeEntities" in data) {
-      return data.tentativeEntities[0].audioContext;
-    } else {
-      return data.audioContext;
-    }
-  };
-  const getsegmentId = data => {
-    if ("tentativeWords" in data) {
-      return data.tentativeWords[0].segmentId;
-    } else if ("tentativeEntities" in data) {
-      return data.tentativeEntities[0].segmentId;
-    } else {
-      return data.segmentId;
-    }
-  };
-
-  const drawSegment = segment => {
-    const transcript = `Transcript:${segment.transcript} ${segment.tentativeTranscript}`;
-    const intent = `Intent: ${segment.intent}`;
-    const entities = `Entities:${segment.entities} ${segment.tentativeEntities}`;
-    const terminalWidth = process.stdout.columns;
-
-    segment.transcriptDraft(transcript.substring(Math.max(0, transcript.length - terminalWidth), transcript.length));
-    segment.intentDraft(intent);
-    segment.entityDraft(entities.substring(Math.max(0, entities.length - terminalWidth), entities.length));
-  };
-  return function(event) {
-    if (printRaw) {
-      console.dir(event, { depth: null });
-      return;
-    }
-    const eventType = event.streamingResponse;
-    if (eventType === "started") return;
-    if (eventType === "finished") {
-      return;
-    }
-    const data = event[eventType];
-    const audioContext = getAudioContext(data);
-    const segmentId = getsegmentId(data);
-    const key = `${audioContext}-${segmentId}`;
-    const segmentState = getSegmentState(key);
-    if (eventType === "segmentEnd") {
-    } else if (eventType.startsWith("tentative")) {
-      if (eventType.toLowerCase().endsWith("transcript")) {
-        segmentState.tentativeTranscript = data.tentativeWords.map(word => word.word).join(" ");
-      } else if (eventType.toLowerCase().endsWith("entities")) {
-        segmentState.tentativeEntities = data.tentativeEntities
-          .map(entity => `${entity.entity}(${entity["value"]})`)
-          .join(" ");
-      } else if (eventType.toLowerCase().endsWith("intent")) {
-        segmentState.intent = data.intent;
-      }
-      context[key] = segmentState;
-    } else {
-      if (eventType === "entity") {
-        segmentState.entities = `${segmentState.entities} ${data.entity}(${data["value"]})`;
-        segmentState.tentativeEntities = "";
-      } else if (eventType === "intent") {
-        segmentState.intent = data.intent;
-      } else if (eventType === "transcript") {
-        segmentState.transcript = `${segmentState.transcript} ${data.word}`;
-        segmentState.tentativeTranscript = "";
-      }
-      context[key] = segmentState;
-    }
-    drawSegment(segmentState);
-  };
 };
 
 const createSpeechlyClient = (token, languageCode) => {

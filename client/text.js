@@ -1,6 +1,9 @@
 const prompts = require("prompts");
 const numbers = require("number-to-words");
-const { getSpeechlyClient, getPrinter } = require("./speechly");
+const { getSpeechlyClient } = require("./speechly");
+
+const argv = require("yargs").argv;
+const printRaw = argv.raw;
 
 const createParser = client => async text => {
   return new Promise((resolve, reject) => {
@@ -24,8 +27,16 @@ const createParser = client => async text => {
       }
       try {
         const response = await parseText(request.text);
-        const print = getPrinter();
-        response.responses.forEach(event => print(event));
+        if (printRaw) {
+          console.dir(response, { depth: null });
+        } else {
+          response.segments.forEach((segment, i) => {
+            console.log(`Segment: ${i + 1}`);
+            console.log(`Transcript: ${segment.tokens.map(token => token.word).join(" ")}`);
+            console.log(`Intent: ${segment.intent || ""}`);
+            console.log(`Entities:${segment.entities.map(entity => `${entity.entity}(${entity["value"]})`).join(" ")}`);
+          });
+        }
       } catch (err) {
         console.error(err);
         process.exit(2);
