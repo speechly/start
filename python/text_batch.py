@@ -70,4 +70,3 @@ if __name__ == '__main__':
                 "entities":entities,
                 "response_time_ms": (ended - started)*1000
             }))
-
