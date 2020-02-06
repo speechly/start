@@ -2,7 +2,12 @@ const prompts = require("prompts");
 const numbers = require("number-to-words");
 const { getSpeechlyClient } = require("./speechly");
 
-const argv = require("yargs").argv;
+const argv = require("yargs").options({
+  raw: {
+    describe: "Output raw response only",
+    type: "boolean"
+  }
+}).argv;
 const printRaw = argv.raw;
 
 const createParser = client => async text => {

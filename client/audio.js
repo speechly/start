@@ -3,8 +3,18 @@ const recorder = require("node-record-lpcm16");
 const { finished, Writable } = require("stream");
 const { getSpeechlyClient } = require("./speechly");
 
-const argv = require("yargs").argv;
+const argv = require("yargs").options({
+  raw: {
+    describe: "Output raw events only",
+    type: "boolean"
+  },
+  "raw-no-tentative": {
+    describe: "Output raw events only and filter tentatives out",
+    type: "boolean"
+  }
+}).argv;
 const printRaw = argv.raw;
+const printRawNoTentative = argv["raw-no-tentative"];
 
 readline.emitKeypressEvents(process.stdin);
 process.stdin.setRawMode(true);
@@ -39,11 +49,16 @@ getPrinter = () => {
   };
 
   return function(event) {
+    const eventType = event.streamingResponse;
     if (printRaw) {
       console.dir(event, { depth: null });
       return;
+    } else if (printRawNoTentative) {
+      if (!eventType.startsWith("tentative")) {
+        console.dir(event, { depth: null });
+      }
+      return;
     }
-    const eventType = event.streamingResponse;
     if (eventType === "started") return;
     if (eventType === "finished") {
       return;
