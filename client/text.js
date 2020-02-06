@@ -32,8 +32,8 @@ const createParser = client => async text => {
         } else {
           response.segments.forEach((segment, i) => {
             console.log(`Segment: ${i + 1}`);
-            console.log(`Transcript: ${segment.tokens.map(token => token.word).join(" ")}`);
-            console.log(`Intent: ${segment.intent || ""}`);
+            console.log(`Transcript: ${segment.text}`);
+            console.log(`Intent: ${segment.intent ? segment.intent.intent : ""}`);
             console.log(`Entities:${segment.entities.map(entity => `${entity.entity}(${entity["value"]})`).join(" ")}`);
           });
         }
