@@ -36,7 +36,10 @@ def align(s1, s2):
     alignment[y[j]] = i
     return alignment
 
-def get_span(alignment, text):
+def get_span(alignment, text, start, end):
+    text = text.split(' ')
+    text = text[(start-1):(end-1)]
+    text = ' '.join(text)
     i = [alignment[w] for w in text.lower().split(' ')]
     return [min(i), max(i)+1]
 
@@ -60,7 +63,7 @@ if __name__ == '__main__':
                     "value": entity.value,
                     "start_position": entity.start_position,
                     "end_position": entity.end_position,
-                    "span": get_span(alignment, entity.value)
+                    "span": get_span(alignment, segment.text, entity.start_position, entity.end_position)
                 }
                 for entity in segment.entities]
             print(json.dumps({
