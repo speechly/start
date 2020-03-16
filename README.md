@@ -19,7 +19,7 @@ For most linux disto's
 Now you can install the client with: 
     
     git clone https://github.com/speechly/start.git
-    cd client
+    cd start/client
     npm install 
 
 ## Running the client
