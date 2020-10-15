@@ -1,6 +1,8 @@
+# <a href="https://www.speechly.com/"><img src="https://www.speechly.com/images/logo.png" height="100" alt="Speechly"></a>
+
 # Getting Started with Speechly
 
-This repository features a simple node command line client for calling the [Speechly](https://www.speechly.com/) API. 
+This repository features a simple node command line client for calling the [Speechly](https://www.speechly.com/) API. You can follow our [Quick Start](https://www.speechly.com/docs/quick-start) guide to get started with Speechly.
 
 ## Prerequisites
 
